@@ -1,0 +1,30 @@
+import java.util.Random;
+
+public class Assignment1 {
+    public static void main(String[] args) {
+
+	// My first name in my native language (Arabic) with waving hand emoji
+        String firstName = "Hi \uD83D\uDC4B, my name is \u0636\u064A\u0627\u0621 \u0627\u0644\u062F\u064A\u0646 \u0646\u0635\u0627\u0631"; 
+
+        System.out.println(firstName);
+        System.out.println("Size of the string" + firstName.length());
+        System.out.println("Explanation: The String 'firstName' contains a mix of ASCII characters, Arabic characters represented using Unicode code units, and an emoji represented using Unicode escape sequence. The length of the String is the total number of Unicode code units used to represent the characters, including escape sequences.");
+
+        
+        // Checking data type for storing a random number
+        Random random = new Random();
+        int randomNumber = random.nextInt(2000000000); // Generating random number between 0 and 2 billion
+        System.out.println("3. Random number generated: " + randomNumber); // Printing random number
+        
+        // Checking the preferred data type for storing the random number
+        if (randomNumber >= Byte.MIN_VALUE && randomNumber <= Byte.MAX_VALUE) {
+            System.out.println("Preferred data type: byte");
+        } else if (randomNumber >= Short.MIN_VALUE && randomNumber <= Short.MAX_VALUE) {
+            System.out.println("Preferred data type: short");
+        } else if (randomNumber >= Integer.MIN_VALUE && randomNumber <= Integer.MAX_VALUE) {
+            System.out.println("Preferred data type: int");
+        } else {
+            System.out.println("Preferred data type: long");
+        }
+    }
+}
