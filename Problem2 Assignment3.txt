@@ -1,0 +1,116 @@
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
+
+public class HeartRates {
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
+    private int maximumHeartRate;
+
+    // Constants
+    private static final int RESTING_HEART_RATE = 70;
+    private static final double LOWER_BOUNDARY = 0.5;
+    private static final double UPPER_BOUNDARY = 0.85;
+
+    // Constructor
+    public HeartRates(String firstName, String lastName, String dateOfBirthStr) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+
+        // Parse dateOfBirth from string
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            this.dateOfBirth = LocalDate.parse(dateOfBirthStr, formatter);
+        } catch(DateTimeParseException e) {
+            System.out.println("Invalid date format. Please enter in yyyy-MM-dd format.");
+            System.exit(1);
+        }
+    }
+
+    // Getters and Setters
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public int getMaximumHeartRate() {
+        return maximumHeartRate;
+    }
+
+    // Helper method to calculate age in years
+    public int calculateAge() {
+        LocalDate today = LocalDate.now();
+        Period agePeriod = Period.between(dateOfBirth, today);
+        return agePeriod.getYears();
+    }
+
+    // Method to calculate maximum heart rate
+    public void calculateMaximumHeartRate() {
+        int age = calculateAge();
+        this.maximumHeartRate = 220 - age;
+    }
+
+    // Method to calculate target heart rate range
+    public void calculateTargetHeartRate() {
+        double averageHeartRate = maximumHeartRate - RESTING_HEART_RATE;
+        double lowerBoundaryTargetHeartRate = (averageHeartRate * LOWER_BOUNDARY) + RESTING_HEART_RATE;
+        double upperBoundaryTargetHeartRate = (averageHeartRate * UPPER_BOUNDARY) + RESTING_HEART_RATE;
+        System.out.printf("The Target Heart Rate Range is between %.1f and %.1f%n",
+                lowerBoundaryTargetHeartRate, upperBoundaryTargetHeartRate);
+    }
+
+    // Override toString() method to display HeartRates object as string
+    @Override
+    public String toString() {
+        return "First Name: " + firstName + "\n" +
+                "Last Name: " + lastName + "\n" +
+                "Date of Birth: " + dateOfBirth.toString() + "\n" +
+                "Age: " + calculateAge() + "\n" +
+                "Maximum Heart Rate: " + maximumHeartRate;
+    }
+
+public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter your first name:");
+        String firstName = scanner.nextLine();
+        System.out.println("Please enter your last name:");
+        String lastName = scanner.nextLine();
+        LocalDate birthday;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+        while (true) {
+            System.out.println("Please enter your birth date in the format - (yyyy-mm-dd)-Example 1989-4-14:");
+            String input = scanner.nextLine();
+            try {
+                birthday = LocalDate.parse(input, formatter);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid input, please try again.");
+            }
+        }
+        HeartRates heartRates = new HeartRates(firstName, lastName, birthday);
+        System.out.println("The Target Heart Rate Range is between " + heartRates.getLowerBoundaryTargetHeartRate() +
+                " and " + heartRates.getUpperBoundaryTargetHeartRate());
+        System.out.println(heartRates.toString());
+    }
