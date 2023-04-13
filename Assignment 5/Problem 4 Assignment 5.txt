@@ -1,0 +1,205 @@
+// Employee class (parent)
+public abstract class Employee {
+    private String firstName;
+    private String lastName;
+    private String socialSecurityNumber;
+
+    // Constructor
+    public Employee(String firstName, String lastName, String socialSecurityNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.socialSecurityNumber = socialSecurityNumber;
+    }
+
+    // Getters and setters
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getSocialSecurityNumber() {
+        return socialSecurityNumber;
+    }
+
+    public void setSocialSecurityNumber(String socialSecurityNumber) {
+        this.socialSecurityNumber = socialSecurityNumber;
+    }
+
+    // Abstract method to get the payment of an employee
+    public abstract double getPayment();
+
+    // toString() method to display the current status of an employee
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
+                '}';
+    }
+}
+
+// CommissionEmployee class (child)
+public class CommissionEmployee extends Employee {
+    private double grossSales;
+    private double commissionRate;
+
+    // Constructor
+    public CommissionEmployee(String firstName, String lastName, String socialSecurityNumber,
+                              double grossSales, double commissionRate) {
+        super(firstName, lastName, socialSecurityNumber);
+        this.grossSales = grossSales;
+        this.commissionRate = commissionRate;
+    }
+
+    // Getters and setters
+    public double getGrossSales() {
+        return grossSales;
+    }
+
+    public void setGrossSales(double grossSales) {
+        this.grossSales = grossSales;
+    }
+
+    public double getCommissionRate() {
+        return commissionRate;
+    }
+
+    public void setCommissionRate(double commissionRate) {
+        this.commissionRate = commissionRate;
+    }
+
+    // Override getPayment() method to calculate payment for CommissionEmployee
+    @Override
+    public double getPayment() {
+        return grossSales * commissionRate;
+    }
+
+    // toString() method to display the current status of a CommissionEmployee
+    @Override
+    public String toString() {
+        return "CommissionEmployee{" +
+                "grossSales=" + grossSales +
+                ", commissionRate=" + commissionRate +
+                "} " + super.toString();
+    }
+}
+
+// BasePlusCommissionEmployee class (child of CommissionEmployee)
+public class BasePlusCommissionEmployee extends CommissionEmployee {
+    private double baseSalary;
+
+    // Constructor
+    public BasePlusCommissionEmployee(String firstName, String lastName, String socialSecurityNumber,
+                                       double grossSales, double commissionRate, double baseSalary) {
+        super(firstName, lastName, socialSecurityNumber, grossSales, commissionRate);
+        this.baseSalary = baseSalary;
+    }
+
+    // Getters and setters
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+
+    // Override getPayment() method to calculate payment for BasePlusCommissionEmployee
+    @Override
+    public double getPayment() {
+        return super.getPayment() + baseSalary;
+    }
+
+    // toString() method to display the current status of a BasePlusCommissionEmployee
+    @Override
+    public String toString() {
+        return "BasePlusCommissionEmployee{" +
+                "baseSalary=" + baseSalary +
+                "} " + super.toString
+() + '}';
+}
+}
+
+// HourlyEmployee class (child)
+public class HourlyEmployee extends Employee {
+private double wage;
+private double hours;
+// Constructor
+public HourlyEmployee(String firstName, String lastName, String socialSecurityNumber,
+                       double wage, double hours) {
+    super(firstName, lastName, socialSecurityNumber);
+    this.wage = wage;
+    this.hours = hours;
+}
+
+// Getters and setters
+public double getWage() {
+    return wage;
+}
+
+public void setWage(double wage) {
+    this.wage = wage;
+}
+
+public double getHours() {
+    return hours;
+}
+
+public void setHours(double hours) {
+    this.hours = hours;
+}
+
+// Override getPayment() method to calculate payment for HourlyEmployee
+@Override
+public double getPayment() {
+    return wage * hours;
+}
+
+// toString() method to display the current status of a HourlyEmployee
+@Override
+public String toString() {
+    return "HourlyEmployee{" +
+            "wage=" + wage +
+            ", hours=" + hours +
+            "} " + super.toString();
+}
+}
+
+// Driver class to test all employee categories
+public class EmployeeTest {
+public static void main(String[] args) {
+// Create an array of five Employee objects
+Employee[] employees = new Employee[5];
+    // Initialize the array with different types of employees
+    employees[0] = new CommissionEmployee("John", "Doe", "111-11-1111", 50000, 0.04);
+    employees[1] = new BasePlusCommissionEmployee("Jane", "Doe", "222-22-2222", 100000, 0.03, 5000);
+    employees[2] = new HourlyEmployee("Bob", "Smith", "333-33-3333", 20, 40);
+    employees[3] = new SalariedEmployee("Alice", "Johnson", "444-44-4444", 800);
+    employees[4] = new HourlyEmployee("Charlie", "Brown", "555-55-5555", 15, 35);
+
+    // Print the current status of all employees
+    for (Employee employee : employees) {
+        System.out.println(employee);
+    }
+
+    // Calculate and print the total salaries of all employees
+    double totalSalary = 0;
+    for (Employee employee : employees) {
+        totalSalary += employee.getPayment();
+    }
+    System.out.println("Total salaries: $" + totalSalary);
+}
+}
+

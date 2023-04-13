@@ -1,0 +1,64 @@
+import java.time.LocalDate;
+
+public class DeptEmployee {
+    private String name;
+    private LocalDate hireDate;
+    private double salary;
+    
+    public DeptEmployee(String name, LocalDate hireDate, double salary) {
+        this.name = name;
+        this.hireDate = hireDate;
+        this.salary = salary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public LocalDate getHireDate() {
+        return hireDate;
+    }
+    
+    public double computeSalary() {
+        return salary;
+    }
+}
+
+public class Professor extends DeptEmployee {
+    private int numberOfPublications;
+    
+    public Professor(String name, LocalDate hireDate, double salary, int numberOfPublications) {
+        super(name, hireDate, salary);
+        this.numberOfPublications = numberOfPublications;
+    }
+    
+    public int getNumberOfPublications() {
+        return numberOfPublications;
+    }
+    
+    public void setNumberOfPublications(int numberOfPublications) {
+        this.numberOfPublications = numberOfPublications;
+    }
+}
+
+public class Secretary extends DeptEmployee {
+    private double overtimeHours;
+    
+    public Secretary(String name, LocalDate hireDate, double salary, double overtimeHours) {
+        super(name, hireDate, salary);
+        this.overtimeHours = overtimeHours;
+    }
+    
+    public double getOvertimeHours() {
+        return overtimeHours;
+    }
+    
+    public void setOvertimeHours(double overtimeHours) {
+        this.overtimeHours = overtimeHours;
+    }
+    
+    @Override
+    public double computeSalary() {
+        return super.computeSalary() + 12 * overtimeHours;
+    }
+}

@@ -1,0 +1,51 @@
+public interface Figure {
+    void getFigure();
+}
+
+public class UpwardHat implements Figure {
+    @Override
+    public void getFigure() {
+        System.out.print("/\\ ");
+    }
+}
+
+public class DownwardHat implements Figure {
+    @Override
+    public void getFigure() {
+        System.out.print("\\/ ");
+    }
+}
+
+public class FaceMaker implements Figure {
+    @Override
+    public void getFigure() {
+        System.out.print(":) ");
+    }
+}
+
+public class Vertical implements Figure {
+    @Override
+    public void getFigure() {
+        System.out.print("|| ");
+    }
+}
+
+public class Driver {
+    public static void main(String[] args) {
+        Figure[] figures = {new UpwardHat(), new UpwardHat(), new DownwardHat(), new FaceMaker(), new Vertical()};
+
+        for (Figure figure : figures) {
+            figure.getFigure();
+            System.out.print(figure.getClass().getSimpleName() + " : ");
+            if (figure instanceof UpwardHat) {
+                System.out.println("/\\");
+            } else if (figure instanceof DownwardHat) {
+                System.out.println("\\/");
+            } else if (figure instanceof FaceMaker) {
+                System.out.println(":)");
+            } else if (figure instanceof Vertical) {
+                System.out.println("| |");
+            }
+        }
+    }
+}
