@@ -1,0 +1,46 @@
+public class MyTable {
+    private Entry[] entries = new Entry[26];
+
+    public String get(char c) {
+        int index = c - 'a';
+        if (index >= 0 && index < 26) {
+            Entry entry = entries[index];
+            if (entry != null && entry.ch == c) {
+                return entry.str;
+            }
+        }
+        return null;
+    }
+
+    public void add(char c, String s) {
+        int index = c - 'a';
+        if (index >= 0 && index < 26) {
+            Entry entry = new Entry(c, s);
+            entries[index] = entry;
+        }
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Entry entry : entries) {
+            if (entry != null) {
+                sb.append(entry.toString()).append(" ");
+            }
+        }
+        return sb.toString();
+    }
+
+    private class Entry {
+        char ch;
+        String str;
+
+        Entry(char ch, String str) {
+            this.ch = ch;
+            this.str = str;
+        }
+
+        public String toString() {
+            return ch + "->" + str;
+        }
+    }
+}
