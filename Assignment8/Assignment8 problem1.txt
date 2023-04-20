@@ -1,0 +1,132 @@
+package MyPersonList;
+
+import java.util.Arrays;
+
+public class MyPersonList {
+    private final int INITIAL_LENGTH = 4;
+    private Person[] personArray;
+    private int size;
+
+    public MyPersonList() {
+        personArray = new Person[INITIAL_LENGTH];
+        size = 0;
+    }
+
+    // Add element in last
+    public void add(Person p) {
+        if (p == null) return;
+        if (size == personArray.length) resize();
+        personArray[size++] = p;
+    }
+
+    public Person get(int i) {
+        if (i < 0 || i >= size) {
+            return null;
+        }
+        return personArray[i];
+    }
+
+    public boolean find(String lastName) {
+        if (lastName == null) return false;
+        for (Person person : personArray) {
+            if (person != null && person.getLast().equals(lastName)) return true;
+        }
+        return false; // The element is not in the list
+    }
+
+    public void insert(Person p, int pos) {
+        if (pos > size || pos < 0) return;
+        if (pos == personArray.length || size + 1 > personArray.length) {
+            resize();
+        }
+        Person[] temp = new Person[personArray.length + 1];
+        System.arraycopy(personArray, 0, temp, 0, pos);
+        temp[pos] = p;
+        System.arraycopy(personArray, pos, temp, pos + 1, personArray.length - pos);
+        personArray = temp;
+        ++size;
+    }
+
+    public boolean remove(String lastName) {
+        if (size == 0) return false; // list is empty
+        if (lastName == null) return false;
+        int index = -1;
+        for (int i = 0; i < size; ++i) {
+            if (personArray[i] != null && personArray[i].getLast().equals(lastName)) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) return false; // lastName is not found in the list
+        Person[] temp = new Person[personArray.length];
+        System.arraycopy(personArray, 0, temp, 0, index);
+        System.arraycopy(personArray, index + 1, temp, index, personArray.length - (index + 1));
+        personArray = temp;
+        --size;
+        return true;
+    }
+
+    private void resize() {
+        System.out.println("resizing");
+        int len = personArray.length;
+        int newlen = 2 * len;
+        Person[] temp = new Person[newlen];
+        System.arraycopy(personArray, 0, temp, 0, len);
+        personArray = temp;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < size - 1; ++i) {
+            sb.append(personArray[i] + ", ");
+        }
+        sb.append(personArray[size - 1] + "]");
+        return sb.toString();
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return (size == 0);
+    }
+
+    public Object clone() {
+        Person[] temp = Arrays.copyOf(personArray, size);
+        return temp;
+    }
+public static void main(String[] args) {
+    MyPersonList l = new MyPersonList();
+    Person p1 = new Person("Doe", "John", 30);
+    Person p2 = new Person("Smith", "Jane", 25);
+    Person p3 = new Person("Johnson", "Michael", 35);
+
+    // Adding persons to the list
+    l.add(p1);
+    l.add(p2);
+    l.add(p3);
+
+    System.out.println("Initial list: " + l);
+    System.out.println("List size: " + l.size());
+    System.out.println("Is list empty? " + l.isEmpty());
+
+    // Finding persons by last name
+    System.out.println("Finding person with last name 'Smith': " + l.find("Smith"));
+    System.out.println("Finding person with last name 'Johnson': " + l.find("Johnson"));
+    System.out.println("Finding person with last name 'Brown': " + l.find("Brown"));
+
+    // Inserting person at specific position
+    Person p4 = new Person("Taylor", "Emma", 28);
+    System.out.println("Inserting person 'Taylor' at position 1");
+    l.insert(p4, 1);
+    System.out.println("Updated list: " + l);
+
+    // Removing person by last name
+    System.out.println("Removing person with last name 'Doe': " + l.remove("Doe"));
+    System.out.println("Removing person with last name 'Brown': " + l.remove("Brown"));
+    System.out.println("Updated list: " + l);
+
+    System.out.println("List size: " + l.size());
+    System.out.println("Is list empty? " + l.isEmpty());
+}
