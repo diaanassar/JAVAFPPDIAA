@@ -1,0 +1,80 @@
+import java.util.HashMap;
+import java.util.List;
+
+public class Key {
+    private String firstName;
+    private String lastName;
+
+    public Key(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Key)) return false;
+        Key key = (Key) o;
+        return firstName.equals(key.firstName) && lastName.equals(key.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        return result;
+    }
+}
+
+class Student {
+    private String firstName;
+    private String lastName;
+    private double gpa;
+    private String studentClass;
+
+    public Student(String firstName, String lastName, double gpa, String studentClass) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gpa = gpa;
+        this.studentClass = studentClass;
+    }
+
+    // Getters and Setters omitted for brevity
+}
+
+class Admin {
+    public static HashMap<Key, Student> processStudents(List<Student> students) {
+        HashMap<Key, Student> hashMap = new HashMap<>();
+        for (Student student : students) {
+            Key key = new Key(student.getFirstName(), student.getLastName());
+            hashMap.put(key, student);
+        }
+        return hashMap;
+    }
+
+    public static double computeAverageGPA(HashMap<Key, Student> maps) {
+        double sum = 0.0;
+        for (Student student : maps.values()) {
+            sum += student.getGpa();
+        }
+        return sum / maps.size();
+    }
+}
+
+class Test {
+    public static void main(String[] args) {
+        // Create sample data
+        Student student1 = new Student("John", "Doe", 3.8, "Freshman");
+        Student student2 = new Student("Jane", "Smith", 4.0, "Sophomore");
+        Student student3 = new Student("Mark", "Johnson", 3.5, "Junior");
+        List<Student> students = List.of(student1, student2, student3);
+
+        // Test processStudents method
+        HashMap<Key, Student> hashMap = Admin.processStudents(students);
+        System.out.println(hashMap.size()); // Output: 3 (number of students in the hashmap)
+
+        // Test computeAverageGPA method
+        double averageGPA = Admin.computeAverageGPA(hashMap);
+        System.out.println(averageGPA); // Output: 3.7666666666666666 (average GPA of all students)
+    }
+}
