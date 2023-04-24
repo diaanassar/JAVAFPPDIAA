@@ -1,0 +1,85 @@
+import java.util.InputMismatchException;
+
+class WithdrawalException extends Exception {
+    public WithdrawalException(String message) {
+        super(message);
+    }
+}
+
+class MinimumBalanceException extends Exception {
+    public MinimumBalanceException(String message) {
+        super(message);
+    }
+}
+
+class CustomerAccount {
+    private String cus_name;
+    private String acc_No;
+    private double balance;
+
+    public CustomerAccount(String cus_name, String acc_No, double balance) {
+        this.cus_name = cus_name;
+        this.acc_No = acc_No;
+        this.balance = balance;
+    }
+
+    public boolean deposit(double amount) {
+        if (amount < 0) {
+            return false;
+        }
+        this.balance += amount;
+        return true;
+    }
+
+    public boolean withdraw(double amount) throws WithdrawalException, MinimumBalanceException {
+        if (amount < 0) {
+            return false;
+        }
+        if (amount > this.balance) {
+            throw new WithdrawalException("Withdraw amount exceeds balance");
+        }
+        if (this.balance - amount < 100) {
+            throw new MinimumBalanceException("Balance reached below $100");
+        }
+        this.balance -= amount;
+        return true;
+    }
+
+    public double getBalance() {
+        return this.balance;
+    }
+}
+
+public class ExceptionHandlingExample {
+    public static void main(String[] args) {
+        java.util.Scanner sc = new java.util.Scanner(System.in);
+        int score = 0;
+        try {
+            System.out.println("Enter the score (0-100): ");
+            score = sc.nextInt();
+
+            if (score < 0 || score > 100) {
+                throw new UnsupportedOperationException("Score should be between 0 and 100");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("InputMismatchException: Please enter a valid integer for score.");
+        } catch (UnsupportedOperationException e) {
+            System.out.println("UnsupportedOperationException: " + e.getMessage());
+        } finally {
+            sc.close();
+        }
+
+        CustomerAccount customerAccount = new CustomerAccount("John", "123456789", 1000.0);
+
+        try {
+            boolean isDeposited = customerAccount.deposit(500.0);
+            System.out.println("Deposit Successful: " + isDeposited);
+            boolean isWithdrawn = customerAccount.withdraw(700.0);
+            System.out.println("Withdrawal Successful: " + isWithdrawn);
+            double balance = customerAccount.getBalance();
+            System.out.println("Current Balance: $" + balance);
+        } catch (WithdrawalException | MinimumBalanceException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+}
